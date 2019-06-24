@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eddy.liveline.requirement.dao.RequirementMapper" >
+  <resultMap id="BaseResultMap" type="com.eddy.liveline.requirement.pojo.Requirement" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="requirement_newstime" property="requirementNewstime" jdbcType="TIMESTAMP" />
+    <result column="requirement_status" property="requirementStatus" jdbcType="INTEGER" />
+    <result column="requirement_summary" property="requirementSummary" jdbcType="VARCHAR" />
+    <result column="requirement_thumbnail" property="requirementThumbnail" jdbcType="VARCHAR" />
+    <result column="requirement_title" property="requirementTitle" jdbcType="VARCHAR" />
+    <result column="requirement_comment" property="requirementComment" jdbcType="INTEGER" />
+    <result column="requirement_updatetime" property="requirementUpdatetime" jdbcType="TIMESTAMP" />
+    <result column="requirement_url" property="requirementUrl" jdbcType="VARCHAR" />
+    <result column="requirement_views" property="requirementViews" jdbcType="BIGINT" />
+    <result column="requirement_content" property="requirementContent" jdbcType="LONGVARCHAR" />
+    <result column="requirement_content_md" property="requirementContentMd" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, account_id, requirement_newstime, requirement_status, requirement_summary, requirement_thumbnail,
+    requirement_title, requirement_comment, requirement_updatetime, requirement_url,
+    requirement_views,requirement_content, requirement_content_md
+  </sql>
+
+
+  <!-- 新增需求 -->
+  <insert id="batchSave" parameterType="java.util.List">
+    insert into
+    requirement
+    (
+    <include refid="Base_Column_List" />
+    )
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=INTEGER}, #{item.accountId,jdbcType=INTEGER}, #{item.requirementNewstime,jdbcType=TIMESTAMP},
+      #{item.requirementStatus,jdbcType=INTEGER}, #{item.requirementSummary,jdbcType=VARCHAR},
+      #{item.requirementThumbnail,jdbcType=VARCHAR}, #{item.requirementTitle,jdbcType=VARCHAR},
+      #{item.requirementComment,jdbcType=INTEGER}, #{item.requirementUpdatetime,jdbcType=TIMESTAMP},
+      #{item.requirementUrl,jdbcType=VARCHAR}, #{item.requirementViews,jdbcType=BIGINT}, #{item.requirementContent,jdbcType=LONGVARCHAR},
+      #{item.requirementContentMd,jdbcType=LONGVARCHAR})
+    </foreach>
+  </insert>
+
+  <!-- 批量更新专利 -->
+  <update id="batchUpdate" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update requirement
+      <set >
+        <if test="item.accountId != null" >
+          account_id = #{item.accountId,jdbcType=INTEGER},
+        </if>
+        <if test="item.requirementNewstime != null" >
+          requirement_newstime = #{item.requirementNewstime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.requirementStatus != null" >
+          requirement_status = #{item.requirementStatus,jdbcType=INTEGER},
+        </if>
+        <if test="item.requirementSummary != null" >
+          requirement_summary = #{item.requirementSummary,jdbcType=VARCHAR},
+        </if>
+        <if test="item.requirementThumbnail != null" >
+          requirement_thumbnail = #{item.requirementThumbnail,jdbcType=VARCHAR},
+        </if>
+        <if test="item.requirementTitle != null" >
+          requirement_title = #{item.requirementTitle,jdbcType=VARCHAR},
+        </if>
+        <if test="item.requirementComment != null" >
+          requirement_comment = #{item.requirementComment,jdbcType=INTEGER},
+        </if>
+        <if test="item.requirementUpdatetime != null" >
+          requirement_updatetime = #{item.requirementUpdatetime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.requirementUrl != null" >
+          requirement_url = #{item.requirementUrl,jdbcType=VARCHAR},
+        </if>
+        <if test="item.requirementViews != null" >
+          requirement_views = #{item.requirementViews,jdbcType=BIGINT},
+        </if>
+        <if test="item.requirementContent != null" >
+          requirement_content = #{item.requirementContent,jdbcType=LONGVARCHAR},
+        </if>
+        <if test="item.requirementContentMd != null" >
+          requirement_content_md = #{item.requirementContentMd,jdbcType=LONGVARCHAR},
+        </if>
+      </set>
+      where id = #{item.id,jdbcType=INTEGER}
+    </foreach>
+  </update>
+
+
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from requirement where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <!--批量删除-->
+  <delete id="deleteByIds" parameterType="java.util.List">
+    delete from requirement where id in
+    <foreach collection="list" index="" open="(" separator="," close=")" item="item">
+      #{item}
+    </foreach>
+  </delete>
+
+
+  <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from requirement
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+
+  <select id="query" parameterType="map" resultMap="BaseResultMap">
+    SELECT * from requirement
+  </select>
+
+
+</mapper>

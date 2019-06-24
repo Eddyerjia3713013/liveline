@@ -1,0 +1,104 @@
+server:
+  port: 28080
+  tomcat: 
+     uri-encoding: UTF-8
+#     max-threads: 500
+#     min-spare-threads: 100
+#     max-connections: 2000
+  connection-timeout: 60000
+
+spring:
+  application:
+    name: live-gateway
+  http:
+    encoding:
+      force: true
+      enabled: true
+      charset: UTF-8
+    multipart:
+      max-file-size: 10MB      # Max file size，默认1M
+      max-request-size: 100Mb   # Max request size，默认10M
+  mvc:
+    favicon:
+      enabled: false
+
+#  redis:
+#    database: 9
+#    host: 192.168.0.145
+#    port: 6381
+#    password: null
+
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    enabled: false
+    sampler:
+      percentage: 1
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:28761/eureka/
+management:
+  security:
+    enabled: false
+logging:
+  file: logs/live-gateway.log
+  level:
+    root: warn
+zuul:
+  ignored-headers: false
+  add-host-header: true
+  add-proxy-headers: true
+  ServletDetectionFilter:
+    pre: 
+      disable: true
+  servletPath: 
+  routes:
+    platform-home:
+      path: /live/**
+      serviceId: live-client
+      stripPrefix: false
+      sensitive-headers: null
+
+#    platform-wf:
+#      path: /wf/**
+#      serviceId: ourchem-cms-wf
+#      stripPrefix: false
+#      sensitive-headers: null
+#    platform-dict:
+#      path: /dict/**
+#      serviceId: ourchem-common-dict
+#      stripPrefix: false
+#      sensitive-headers: null
+#    platform-agency:
+#      path: /agency/**
+#      serviceId: ourchem-cms-agency
+#      stripPrefix: false
+#      sensitive-headers: null
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000000
+ribbon:
+  ConnectTimeout: 300000
+  ReadTimeout: 6000000
+
+ 
+#mybatis:
+#  type-aliases-package: tk.mybatis.springboot.model
+#  mapper-locations: classpath:com/ourchem/cms/**/*.xml
+#  mapper-base-package: com.ourchem.cms.**.dao
+#pagehelper:
+#  helperDialect: mysql
+#  reasonable: true
+#  supportMethodsArguments: true
+#  params: count=countSql
+#hikari:
+#  jdbc-url: jdbc:mysql://192.168.0.145:3307/om_cms_main_dev?autoReconnect=true&failOverReadOnly=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false
+#  username: ourchem_ipman
+#  password: ourchem_ipman
+#  minimum-idle: 1
+#  maximum-pool-size: 20

@@ -1,0 +1,54 @@
+server:
+  port: 28081
+  context-path: /live
+  tomcat:
+     uri-encoding: UTF-8
+  connection-timeout: 60000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:28761/eureka/
+
+spring:
+  application:
+    name: live-client
+  http:
+    multipart:
+      max-file-size: 10MB      # Max file size，默认1M
+      max-request-size: 100Mb   # Max request size，默认10M
+  mvc:
+    favicon:
+      enabled: false
+
+  thymeleaf:
+      prefix: classpath:/templates/
+      suffix: .html
+      cache: false
+      mode: LEGACYHTML5
+#  resources:
+#      static-locations: classpath:static
+
+mybatis:
+  type-aliases-package: tk.mybatis.springboot.model
+  mapper-locations: classpath:com/eddy/liveline/**/*.xml
+  mapper-base-package: com.eddy.liveline.**.dao
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+hikari:
+  jdbc-url: jdbc:mysql://localhost:3306/liveline
+  username: root
+  password: admin
+  minimum-idle: 1
+  maximum-pool-size: 20
+
+logging:
+  file: logs/liveline-client.log
+  level:
+    root: warn
+#    com.eddy.liveline: debug
